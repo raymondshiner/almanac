@@ -1,0 +1,6 @@
+{
+  "basePort": 5210,
+  "branchPrefix": "feature/",
+  "installer": "npm install",
+  "devCommand": "PORT=$DEV_PORT npm run dev"
+}
