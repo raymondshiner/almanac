@@ -1,0 +1,4 @@
+project_id = "almanac"
+
+[functions.metadata]
+verify_jwt = true
