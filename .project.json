@@ -2,5 +2,5 @@
   "basePort": 5210,
   "branchPrefix": "feature/",
   "installer": "npm install",
-  "devCommand": "PORT=$DEV_PORT npm run dev"
+  "devCommand": "npm run dev -- --port $DEV_PORT --strictPort"
 }
