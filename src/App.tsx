@@ -6,6 +6,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { AuthProvider } from '@/auth/AuthProvider'
 import { ProtectedRoute } from '@/components/ProtectedRoute'
 import AppShell from '@/components/AppShell'
+import { DIARY_FILTERS } from '@/lib/media'
 
 const Login = lazy(() => import('@/routes/Login'))
 const Diary = lazy(() => import('@/routes/Diary'))
@@ -34,6 +35,9 @@ export default function App() {
                 <Route element={<ProtectedRoute />}>
                   <Route element={<AppShell />}>
                     <Route path="/" element={<Diary />} />
+                    {DIARY_FILTERS.filter((f) => f.value !== 'all').map((f) => (
+                      <Route key={f.path} path={f.path} element={<Diary />} />
+                    ))}
                     <Route path="/log" element={<LogSearch />} />
                     <Route path="/item/:id" element={<ItemDetail />} />
                   </Route>

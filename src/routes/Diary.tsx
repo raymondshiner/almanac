@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -8,8 +7,10 @@ import { StarRating } from '@/components/StarRating'
 import { useDiary } from '@/hooks/useDiary'
 import {
   DIARY_FILTERS,
+  FILTER_PATHS,
   MEDIA_META,
   STATUS_META,
+  filterFromPath,
   formatDate,
   matchesFilter,
   type DiaryFilter,
@@ -61,7 +62,9 @@ function DiaryRow({ entry }: { entry: DiaryEntry }) {
 }
 
 export default function Diary() {
-  const [filter, setFilter] = useState<DiaryFilter>('all')
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
+  const filter = filterFromPath(pathname)
   const diary = useDiary()
   const entries = (diary.data ?? []).filter((e) =>
     matchesFilter(filter, e.media_items.media_type),
@@ -70,14 +73,21 @@ export default function Diary() {
   return (
     <div className="grid gap-4">
       <div className="flex items-baseline justify-between">
-        <h1 className="text-xl font-semibold tracking-tight">Diary</h1>
+        <h1 className="text-xl font-semibold tracking-tight">
+          {filter === 'all'
+            ? 'Diary'
+            : DIARY_FILTERS.find((f) => f.value === filter)!.label}
+        </h1>
         {diary.data && (
           <span className="text-sm text-muted-foreground">
             {entries.length} {entries.length === 1 ? 'entry' : 'entries'}
           </span>
         )}
       </div>
-      <Tabs value={filter} onValueChange={(v) => setFilter(v as DiaryFilter)}>
+      <Tabs
+        value={filter}
+        onValueChange={(v) => navigate(FILTER_PATHS[v as DiaryFilter])}
+      >
         <TabsList className="w-full justify-start overflow-x-auto">
           {DIARY_FILTERS.map((f) => (
             <TabsTrigger key={f.value} value={f.value}>

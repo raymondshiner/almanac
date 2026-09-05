@@ -1,0 +1,11 @@
+name = "sirlexicon-redirects"
+main = "src/index.ts"
+compatibility_date = "2026-09-05"
+
+routes = [
+  { pattern = "movies.sirlexicon.com/*", zone_name = "sirlexicon.com" },
+  { pattern = "shows.sirlexicon.com/*", zone_name = "sirlexicon.com" },
+  { pattern = "games.sirlexicon.com/*", zone_name = "sirlexicon.com" },
+  { pattern = "books.sirlexicon.com/*", zone_name = "sirlexicon.com" },
+  { pattern = "music.sirlexicon.com/*", zone_name = "sirlexicon.com" },
+]

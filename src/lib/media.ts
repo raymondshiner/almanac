@@ -20,14 +20,26 @@ export const SEARCH_TYPES: { value: SearchType; label: string }[] = [
 
 export type DiaryFilter = 'all' | 'film' | 'tv' | 'game' | 'book' | 'album'
 
-export const DIARY_FILTERS: { value: DiaryFilter; label: string }[] = [
-  { value: 'all', label: 'All' },
-  { value: 'film', label: 'Film' },
-  { value: 'tv', label: 'TV' },
-  { value: 'game', label: 'Games' },
-  { value: 'book', label: 'Books' },
-  { value: 'album', label: 'Music' },
+export const DIARY_FILTERS: { value: DiaryFilter; label: string; path: string }[] = [
+  { value: 'all', label: 'All', path: '/' },
+  { value: 'film', label: 'Film', path: '/movies' },
+  { value: 'tv', label: 'TV', path: '/shows' },
+  { value: 'game', label: 'Games', path: '/games' },
+  { value: 'book', label: 'Books', path: '/books' },
+  { value: 'album', label: 'Music', path: '/music' },
 ]
+
+export const FILTER_PATHS = Object.fromEntries(
+  DIARY_FILTERS.map((f) => [f.value, f.path]),
+) as Record<DiaryFilter, string>
+
+const PATH_FILTERS = Object.fromEntries(
+  DIARY_FILTERS.map((f) => [f.path, f.value]),
+) as Record<string, DiaryFilter>
+
+export function filterFromPath(pathname: string): DiaryFilter {
+  return PATH_FILTERS[pathname.replace(/\/+$/, '') || '/'] ?? 'all'
+}
 
 export function matchesFilter(filter: DiaryFilter, type: MediaType): boolean {
   if (filter === 'all') return true
