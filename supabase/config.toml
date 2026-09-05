@@ -2,3 +2,16 @@ project_id = "almanac"
 
 [functions.metadata]
 verify_jwt = true
+
+[auth]
+site_url = "https://almanac.sirlexicon.com"
+additional_redirect_urls = [
+  "https://almanac.sirlexicon.com",
+  "https://almanac-6vy.pages.dev",
+  "http://localhost:5211",
+]
+
+[auth.external.google]
+enabled = true
+client_id = "env(GOOGLE_CLIENT_ID)"
+secret = "env(GOOGLE_SECRET)"
