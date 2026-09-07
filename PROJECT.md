@@ -26,7 +26,7 @@ Defaults from `~/src/CLAUDE.md` (Vite + React 19 + TS strict, Tailwind v4, shadc
 - Metadata proxying: **Supabase Edge Functions** front all external APIs — keys stay server-side, one place for rate limits/CORS
 - Metadata sources (one per type, C1):
   - Film & TV → **TMDB**
-  - Games → **RAWG** (simple API key; IGDB's Twitch-OAuth token dance deferred — swappable behind the edge function)
+  - Games → **IGDB** (Twitch client-credentials OAuth — token fetch/refresh lives in the edge function, so client code never sees it. RAWG rejected 2026-09-06: unmaintained, auth broken, API unreliable)
   - Books → **OpenLibrary** (no key)
   - Music → **MusicBrainz + Cover Art Archive** (no key, 1 req/s etiquette — throttle in the edge function)
 - Overrides / reasons: none — validated stack applies; self-hosting is a later cycle, not a stack override.
@@ -57,7 +57,7 @@ Each cycle is one batch of cohesive functionality, shipped together on a feature
 
 **Done when:**
 - [ ] Google SSO in, RLS on, my data is mine
-- [ ] Unified search box resolves titles per media type (TMDB / RAWG / OpenLibrary / MusicBrainz) with artwork
+- [ ] Unified search box resolves titles per media type (TMDB / IGDB / OpenLibrary / MusicBrainz) with artwork
 - [ ] Can log any result: date, rating, optional review, status
 - [ ] A diary view lists everything logged, newest first, filterable by media type
 - [ ] An item detail page shows the artwork, metadata, and my log history for it
@@ -107,7 +107,7 @@ Each cycle is one batch of cohesive functionality, shipped together on a feature
 
 ## Risks / unknowns
 
-- **Four external APIs in one cycle** is the fattest risk — mitigated by the shared edge-function proxy and shallow per-type scope; if one source fights back (likely MusicBrainz throttling or RAWG data quality), stub it to manual entry and ship.
+- **Four external APIs in one cycle** is the fattest risk — mitigated by the shared edge-function proxy and shallow per-type scope; if one source fights back (likely MusicBrainz throttling or IGDB token handling), stub it to manual entry and ship.
 - MusicBrainz 1 req/s limit needs debounced search + server-side throttle or search feels broken.
 - Unified `media_items` shape may pinch when a type needs depth (game platforms/editions, track-level music) — `parent_id` + jsonb buy room, but C2+ may force type tables.
 - "Almanac" name collides with almanac.io (docs startup) — irrelevant for a self-hosted personal app, revisit only if this ever goes public-product.
