@@ -69,15 +69,15 @@ Validated the product: unified search, log/rate/review across all types, diary, 
 **Theme:** same app, new bones — public/admin split on the self-host architecture.
 
 **Done when:**
-- [ ] Next.js App Router scaffold, standalone output; SQLite + Drizzle schema + migrations
-- [ ] Admin session auth (argon2 + cookie); credential seeded from env/installer
-- [ ] All v1 features ported: unified search (metadata proxy as route handlers, IGDB token dance included), log/edit/delete with date/rating/review/status, diary with filters, item detail
-- [ ] Item metadata layer ported: descriptions, external ratings, backdrops — IGDB replacing RAWG for games, OMDb for IMDb/RT, lazy fetch-and-cache into `metadata` JSON
-- [ ] Public read-only routes (SSR): home/diary, item pages — `is_private` entries invisible without a session
-- [ ] `/admin` gated: all write paths reject without session, verified by test
-- [ ] OG tags on public pages (unfurl a diary/item link and it looks right)
-- [ ] verify-ui passing desktop + iPhone 13 viewports
-- [ ] `.project.json` devCommand updated for Next
+- [x] Next.js App Router scaffold, standalone output; SQLite + Drizzle schema + migrations
+- [x] Admin session auth (argon2 + cookie); credential seeded from env/installer
+- [x] All v1 features ported: unified search (metadata proxy as route handlers, IGDB token dance included), log/edit/delete with date/rating/review/status, diary with filters, item detail
+- [x] Item metadata layer ported: descriptions, external ratings, backdrops — IGDB replacing RAWG for games, OMDb for IMDb/RT, fetched server-side at log time + backfill on read, cached into `metadata` JSON
+- [x] Public read-only routes (SSR): home/diary, item pages — `is_private` entries invisible without a session
+- [x] `/admin` gated: all write paths reject without session, verified by test
+- [x] OG tags on public pages (unfurl a diary/item link and it looks right)
+- [x] verify-ui passing desktop + iPhone 13 viewports
+- [x] `.project.json` devCommand updated for Next
 
 ### Cycle 3 — Packaging & installer
 **Theme:** someone who isn't us runs it in 10 minutes.
