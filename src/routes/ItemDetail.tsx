@@ -17,6 +17,7 @@ import { CoverImage } from '@/components/CoverImage'
 import { EntryFields } from '@/components/EntryForm'
 import { StarRating } from '@/components/StarRating'
 import { useItem, useItemChildren, useItemEntries, useItemParent } from '@/hooks/useItem'
+import { useItemDetails } from '@/hooks/useItemDetails'
 import {
   useDeleteEntry,
   useUpdateEntry,
@@ -68,6 +69,33 @@ function EditEntryDialog({ entry, onClose }: { entry: LogEntry; onClose: () => v
   )
 }
 
+function Description({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false)
+  const long = text.length > 500
+  return (
+    <section className="grid gap-2">
+      <h2 className="font-medium">About</h2>
+      <p
+        className={`text-sm leading-relaxed text-muted-foreground whitespace-pre-line ${
+          long && !expanded ? 'line-clamp-6' : ''
+        }`}
+      >
+        {text}
+      </p>
+      {long && (
+        <Button
+          variant="ghost"
+          size="sm"
+          className="justify-self-start"
+          onClick={() => setExpanded((v) => !v)}
+        >
+          {expanded ? 'Show less' : 'Show more'}
+        </Button>
+      )}
+    </section>
+  )
+}
+
 function DeleteEntryButton({ id }: { id: string }) {
   const [armed, setArmed] = useState(false)
   const del = useDeleteEntry()
@@ -107,6 +135,7 @@ export default function ItemDetail() {
   const ready = !!item.data && (!isShow || children.data !== undefined)
   const entryIds = ready ? [id!, ...(children.data ?? []).map((c) => c.id)] : []
   const entries = useItemEntries(entryIds, ready)
+  const details = useItemDetails(item.data)
   const [editing, setEditing] = useState<LogEntry | null>(null)
 
   if (item.isLoading) {
@@ -123,8 +152,15 @@ export default function ItemDetail() {
   const seasonTitle = (itemId: string) =>
     itemId === it.id ? null : children.data?.find((c) => c.id === itemId)?.title
 
+  const d = details.data
+
   return (
     <div className="grid gap-6">
+      {d?.backdropUrl && (
+        <div className="aspect-[21/9] w-full overflow-hidden rounded-lg border border-border">
+          <img src={d.backdropUrl} alt="" className="h-full w-full object-cover" />
+        </div>
+      )}
       <div className="flex gap-4">
         <CoverImage
           src={it.cover_url}
@@ -137,8 +173,22 @@ export default function ItemDetail() {
           <div className="mt-1 flex flex-wrap items-center gap-2">
             <Badge variant="secondary">{MEDIA_META[it.media_type].label}</Badge>
             {it.year != null && <span className="text-sm text-muted-foreground">{it.year}</span>}
+            {d?.genres.slice(0, 3).map((g) => (
+              <span key={g} className="text-sm text-muted-foreground">
+                {g}
+              </span>
+            ))}
           </div>
           {it.creator && <p className="mt-1 text-sm text-muted-foreground">{it.creator}</p>}
+          {(d?.ratings.length ?? 0) > 0 && (
+            <div className="mt-2 flex flex-wrap gap-2">
+              {d!.ratings.map((r) => (
+                <Badge key={r.source} variant="outline">
+                  {r.source} {r.value}
+                </Badge>
+              ))}
+            </div>
+          )}
           {parent.data && (
             <p className="mt-2 text-sm">
               Part of{' '}
@@ -155,6 +205,9 @@ export default function ItemDetail() {
           </p>
         </div>
       </div>
+
+      {details.isLoading && <Skeleton className="h-20 w-full" />}
+      {d?.description && <Description text={d.description} />}
 
       {isShow && (children.data?.length ?? 0) > 0 && (
         <section className="grid gap-2">

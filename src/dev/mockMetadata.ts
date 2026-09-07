@@ -1,6 +1,6 @@
 // Mock search/seasons results for mock mode — deterministic, offline.
 // Covers stay null so tests never hit the network.
-import type { SearchResult, SearchType, SeasonResult } from '@/lib/types'
+import type { ItemDetails, MediaType, SearchResult, SearchType, SeasonResult } from '@/lib/types'
 
 const r = (
   mediaType: SearchType,
@@ -27,7 +27,7 @@ const RESULTS: Record<SearchType, SearchResult[]> = {
     r('game', 'rawg', '50734', 'Celeste', 2018),
   ],
   book: [
-    r('book', 'openlibrary', '/works/OL20876292W', 'Project Hail Mary', 2021, 'Andy Weir'),
+    r('book', 'openlibrary', '/works/OL21745884W', 'Project Hail Mary', 2021, 'Andy Weir'),
     r('book', 'openlibrary', '/works/OL17091839W', 'The Martian', 2011, 'Andy Weir'),
   ],
   album: [
@@ -58,4 +58,30 @@ export async function mockSearch(type: SearchType, query: string): Promise<Searc
 export async function mockSeasons(showExternalId: string): Promise<SeasonResult[]> {
   await delay(120)
   return SEASONS[showExternalId] ?? []
+}
+
+const DETAIL_RATINGS: Partial<Record<MediaType, ItemDetails['ratings']>> = {
+  film: [
+    { source: 'IMDb', value: '8.0/10' },
+    { source: 'Rotten Tomatoes', value: '88%' },
+  ],
+  tv_show: [{ source: 'IMDb', value: '8.7/10' }],
+  game: [
+    { source: 'Metacritic', value: '93/100' },
+    { source: 'RAWG', value: '4.4/5' },
+  ],
+  book: [{ source: 'Open Library', value: '4.3/5' }],
+}
+
+export async function mockDetails(type: MediaType): Promise<ItemDetails> {
+  await delay(120)
+  return {
+    description:
+      'A mock synopsis long enough to exercise the description block: two sentences of plot summary, deterministic and offline, so tests never hit the network.',
+    ratings: DETAIL_RATINGS[type] ?? [],
+    backdropUrl: null,
+    coverUrl: null,
+    genres: type === 'album' ? ['Art Rock'] : ['Science Fiction', 'Drama'],
+    fetchedAt: '2026-01-01T00:00:00.000Z',
+  }
 }

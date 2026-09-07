@@ -53,3 +53,13 @@ export interface SeasonResult {
   year: number | null
   coverUrl: string | null
 }
+
+// Rich metadata fetched lazily per item and cached in media_items.metadata.details
+export interface ItemDetails {
+  description: string | null
+  ratings: { source: string; value: string }[]
+  backdropUrl: string | null
+  coverUrl: string | null
+  genres: string[]
+  fetchedAt: string
+}
