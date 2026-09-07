@@ -92,7 +92,7 @@ Each cycle is one batch of cohesive functionality, shipped together on a feature
 - Docker Compose: app + self-hosted Supabase; document the migration off cloud
 
 ### Cycle 6+ — backlog
-- IGDB swap-in (richer game data), Trakt/Spotify sync, tags, AI features, montressor integration
+- Trakt/Spotify sync, tags, AI features, montressor integration
 
 ## Decisions (settled 2026-07-16)
 
