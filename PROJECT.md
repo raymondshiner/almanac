@@ -72,6 +72,7 @@ Validated the product: unified search, log/rate/review across all types, diary, 
 - [ ] Next.js App Router scaffold, standalone output; SQLite + Drizzle schema + migrations
 - [ ] Admin session auth (argon2 + cookie); credential seeded from env/installer
 - [ ] All v1 features ported: unified search (metadata proxy as route handlers, IGDB token dance included), log/edit/delete with date/rating/review/status, diary with filters, item detail
+- [ ] Item metadata layer ported: descriptions, external ratings, backdrops — IGDB replacing RAWG for games, OMDb for IMDb/RT, lazy fetch-and-cache into `metadata` JSON
 - [ ] Public read-only routes (SSR): home/diary, item pages — `is_private` entries invisible without a session
 - [ ] `/admin` gated: all write paths reject without session, verified by test
 - [ ] OG tags on public pages (unfurl a diary/item link and it looks right)
