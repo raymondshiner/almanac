@@ -33,7 +33,7 @@ export default function AdminLogin() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center p-4">
+    <div className="flex flex-1 items-center justify-center p-4">
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>Almanac admin</CardTitle>
@@ -68,6 +68,6 @@ export default function AdminLogin() {
           </form>
         </CardContent>
       </Card>
-    </main>
+    </div>
   );
 }

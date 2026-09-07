@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "verify-ui": "next build && node tests/verify-ui.mjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.102.8",
